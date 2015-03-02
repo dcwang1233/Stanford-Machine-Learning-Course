@@ -70,7 +70,8 @@ J = J + lambda * reg / (2 * m);
 %               first time.
 %
 delta3 = a3 - ry;
-delta2 = (delta3 * Theta2)(:,2:end) .* sigmoid(a2(:,2:end));
+delta2 = (delta3 * Theta2) .* sigmoidGradient([ones(size(a1*Theta1', 1), 1) a1*Theta1']);
+delta2 = delta2(:, 2:end);
 
 Delta1 = delta2'*a1;
 Delta2 = delta3'*a2;
