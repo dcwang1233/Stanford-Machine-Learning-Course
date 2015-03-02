@@ -69,6 +69,15 @@ J = J + lambda * reg / (2 * m);
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+delta3 = a3 - ry;
+delta2 = (delta3 * Theta2)(:,2:end) .* sigmoid(a2(:,2:end));
+
+Delta1 = delta2'*a1;
+Delta2 = delta3'*a2;
+
+Theta1_grad = Delta1 / m + lambda*[zeros(hidden_layer_size , 1) Theta1(:,2:end)] / m;
+Theta2_grad = Delta2 / m + lambda*[zeros(num_labels , 1) Theta2(:,2:end)] / m;
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -77,46 +86,7 @@ J = J + lambda * reg / (2 * m);
 %               and Theta2_grad from Part 2.
 %
 
-% -------------------------------------------------------------
 
-% Part 2: Backpropagation algorithm
-% -------------------------------------------------------------
-
-
-delta3 = a3 - ry;
-delta2 = (delta3*Theta2)(:,2:end) .* sigmoidGradient(z2);
-
-Delta1 = delta2'*a1;
-Delta2 = delta3'*a2;
-
-Theta1_grad = Delta1 / m + lambda*[zeros(hidden_layer_size , 1) Theta1(:,2:end)] / m;
-Theta2_grad = Delta2 / m + lambda*[zeros(num_labels , 1) Theta2(:,2:end)] / m;
-
-%G1 = zeros(size(Theta1));
-%G2 = zeros(size(Theta2));
-%for i = 1 : m,
-%	ra1 = X(i,:)';
-%	rz2 = Theta1*ra1;
-%	ra2 = sigmoid(rz2);
-%	ra2 = [1;ra2];
-%	rz3 = Theta2*ra2;
-%	ra3 = sigmoid(rz3);
-	
-%	err3 = ra3 - ry(i,:)';
-	
-%	err2 = (Theta2'*err3)(2:end , 1) .* sigmoidGradient(rz2);
-	
-%	G1 = G1 + err2 * ra1';
-%	G2 = G2 + err3 * ra2';
-%end
-
-
-%Theta1_grad = G1 / m + lambda*[zeros(hidden_layer_size , 1) Theta1(:,2:end)] / m;
-%Theta2_grad = G2 / m + lambda*[zeros(num_labels , 1) Theta2(:,2:end)] / m;
-
-% =========================================================================
-
-% Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 
